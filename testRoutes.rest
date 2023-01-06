@@ -1,0 +1,155 @@
+### a user must be an admin to create a new product
+POST http://localhost:3000/api/products/new
+content-type: application/json
+
+{
+  "email": "admin@gmail.com",
+  "password": "admin1234",
+  "product": [
+  {
+    "image": "https://i.ibb.co/HB9V4LH/women1.webp",
+    "name": "Tailored fit",
+    "price": 15,
+    "description": "This classic white T-shirt is made from a soft, lightweight cotton fabric and features a round neckline for a comfortable fit. Whether dressed up or down, it's a versatile piece that everyone should have in their wardrobe.",
+    "colors": ["brown", "black", "maroon"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["women"]
+  },
+  {
+    "image": "https://i.ibb.co/bmfKd8P/women2.webp",
+    "name": "Flowy Blouse",
+    "price": 18,
+    "description": "These slim fit denim jeans have a modern, streamlined silhouette that is perfect for a variety of occasions. The distressed detailing adds a touch of edginess, making them perfect for a casual, cool look.",
+    "colors": ["black", "white", "blue"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["women"]
+  },
+  {
+    "image": "https://i.ibb.co/sv4zhmn/women3.webp",
+    "name": "Graphic Tee",
+    "price": 20,
+    "description": "Stay warm and stylish this season with this oversized black sweater. Made from a cozy knit fabric, it has ribbed cuffs and a relaxed fit that make it perfect for lounging at home or running errands.",
+    "colors": ["yellow-white", "blue-black", "black-white"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["women"]
+  },
+  {
+    "image": "https://i.ibb.co/BcHp9sW/women4.webp",
+    "name": "Silk Blouse",
+    "price": 12,
+    "description": "Make a statement in this elegant red dress, which features a flowy skirt and a fitted bodice. The sleeveless design and V-neckline make it perfect for formal events, while the comfortable fabric ensures you can dance the night away.",
+    "colors": ["pink", "violet", "white"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["women"]
+  },
+  {
+    "image": "https://i.ibb.co/X7BBsdZ/men1.webp",
+    "name": "Slim-fit shirt",
+    "price": 12,
+    "description": "This plaid flannel shirt is a fall and winter staple that can be dressed up or down. The button-down front and long sleeves make it perfect for layering, while the soft fabric will keep you comfortable all day long.",
+    "colors": ["green", "blue", "pink"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["men"]
+  },
+  {
+    "image": "https://i.ibb.co/pRZgczR/men2.webp",
+    "name": "Dry Easy Shorts",
+    "price": 10,
+    "description": "These comfortable grey joggers are made from a soft, stretchy fabric that is perfect for relaxing at home or running errands. The elastic waistband ensures a secure fit, while the slim, tapered legs give them a stylish silhouette.",
+    "colors": ["blue", "green", "black"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["men"]
+  },
+  {
+    "image": "https://i.ibb.co/q1S6VSr/men3.webp",
+    "name": "Polo shirt",
+    "price": 15,
+    "description": "These stylish leather boots have a low heel and a pointed toe, making them perfect for both casual and formal occasions. The lace-up closure allows for a customizable fit, while the sleek design adds a touch of sophistication to any outfit.",
+    "colors": ["blue", "green", "black"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["men"]
+  },
+  {
+    "image": "https://i.ibb.co/mF42dcQ/men4.webp",
+    "name": "Button-down shirt",
+    "price": 15,
+    "description": "Elevate your professional wardrobe with this chic black blazer. The tailored fit and single button closure give it a sleek, modern look, while the lightweight fabric ensures you stay comfortable all day long.",
+    "colors": ["blue", "red", "maroon"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["men"]
+  },
+  {
+    "image": "https://i.ibb.co/Qdvczn8/kids1.webp",
+    "name": "Playful tee",
+    "price": 12,
+    "description": "This cute polka dot sundress is perfect for warm weather. The spaghetti straps and flowy skirt make it comfortable and cool, while the bold print adds a touch of fun. Dress it up with heels or keep it casual with sandals.",
+    "colors": ["black", "dark-blue", "violet"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["kids"]
+  },
+  {
+    "image": "https://i.ibb.co/XbmJwCD/kids2.webp",
+    "name": "Cotton shirt",
+    "price": 10,
+    "description": "Stay protected from the elements in this sporty blue windbreaker. The hood and full zip front closure ensure you stay dry, while the lightweight fabric allows for easy movement. The simple, classic design makes it a versatile piece for any wardrobe.",
+    "colors": ["rose", "violet", "orange"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["kids"]
+  },
+  {
+    "image": "https://i.ibb.co/1G8qHhb/kids3.webp",
+    "name": "Long-sleeved shirt",
+    "price": 18,
+    "description": "These timeless brown Oxford shoes are a must-have for any man's wardrobe. The lace-up closure allows for a customizable fit, while the sleek design and low heel make them perfect for both casual and formal occasions.",
+    "colors": ["navy-blue", "yellow", "maroon"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["kids"]
+  },
+  {
+    "image": "https://i.ibb.co/3s7gC0n/kids4.webp",
+    "name": "Moisture-wicking shirt",
+    "price": 20,
+    "description": "Make a statement at your next event in this glamorous sequin cocktail dress. The fitted silhouette and short hemline show off your curves, while the sparkling sequins add a touch of sparkle. Pair it with heels and simple accessories for a chic look.",
+    "colors": ["yellow", "red", "blue"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["kids"]
+  },
+  {
+    "image": "https://i.ibb.co/Q8T2hFx/baby1.webp",
+    "name": "Cozy jacket",
+    "price": 18,
+    "description": "This cool graphic T-shirt is perfect for adding a pop of personality to any outfit. The bold print and short sleeves make it perfect for warm weather, while the soft, lightweight fabric ensures comfort all day long.",
+    "colors": ["pink", "violet", "blue"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["baby"]
+  },
+  {
+    "image": "https://i.ibb.co/xCF686q/baby2.webp",
+    "name": "Adorable outwear",
+    "price": 12,
+    "description": "These sleek black leggings are a versatile piece that can be dressed up or down. The high waist and stretchy fabric ensure a comfortable, flattering fit, while the classic design makes them perfect for any occasion.",
+    "colors": ["grey", "white", "blue"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["baby"]
+  },
+  {
+    "image": "https://i.ibb.co/ZXm1XZD/baby3.webp",
+    "name": "Soft pants",
+    "price": 15,
+    "description": "This vintage wash denim jacket is a classic piece that will never go out of style. The button-front closure and long sleeves make it perfect for layering, while the distressed detailing adds a touch of edginess to any outfit.",
+    "colors": ["blue", "white", "brown"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["baby"]
+  },
+  {
+    "image": "https://i.ibb.co/brWm5LJ/baby4.webp",
+    "name": "Versatile pants",
+    "price": 10,
+    "description": "This baby shirt or outwear is versatile and suitable for wear in all seasons. It is breathable in the summer and warm in the winter, making it a great choice for all-year-round wear.",
+    "colors": ["brown", "white", "pink"],
+    "sizes": ["small", "medium", "large"],
+    "categories": ["baby"]
+  }
+]
+
+}

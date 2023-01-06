@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* custom style for selecting color & sizes in the detail page */
+.selection input[type="radio"]:checked + label {
+  @apply bg-violet-600 text-white ring-0;
+}
