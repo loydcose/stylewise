@@ -10,18 +10,17 @@ import CategoryItem from "../components/CategoryItem"
 import Item from "../components/Item"
 import Promo from "../components/Promo"
 import axios from "axios"
-import getSession from "../utils/getSession"
 import CartQtyContext from "../context/CartQty"
 import getApiUrl from "../getApiUrl"
+import { unstable_getServerSession } from "next-auth"
+import { authOptions } from "./api/auth/[...nextauth]"
 
 export async function getServerSideProps({ req, res }) {
-  // verify user with unstable_getServerSession
-  const session = await getSession(req, res)
+  const session = await unstable_getServerSession(req, res, authOptions)
 
-  // fetch trending items for trending section
-  // and categories for categories section
+  // request from trending products and categories
   const API_URL = getApiUrl()
-  let responses = []
+  let responses = null
   try {
     const trendingUrl = `${API_URL}/api/products?limit=8`
     const categoriesUrl = `${API_URL}/api/products/categories`
@@ -91,7 +90,7 @@ const Index = ({ trending, categories, data: session }) => {
           </div>
         )}
 
-        {/* Trending section */}
+        {/* trending section */}
         {trending && trending.length !== 0 && (
           <div className="py-24">
             <h2 className="text-2xl tracking-tight font-extrabold mb-4">

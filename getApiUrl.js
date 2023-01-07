@@ -5,6 +5,5 @@ export default function getApiUrl() {
   }
 
   const env = process.env.NODE_ENV || "development"
-  console.log(env)
   return url[env]
 }

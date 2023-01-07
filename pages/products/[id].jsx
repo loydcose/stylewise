@@ -14,18 +14,24 @@ import { useRouter } from "next/router"
 import toast, { Toaster } from "react-hot-toast"
 import { AiOutlineCloseCircle } from "react-icons/ai"
 import CartQtyContext from "../../context/CartQty"
-import getSession from "../../utils/getSession"
 import getApiUrl from "../../getApiUrl"
+import { unstable_getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
 
 export async function getServerSideProps({ req, res, params }) {
-  // verify user with unstable_getServerSession
-  const session = await getSession(req, res)
+  const session = await unstable_getServerSession(req, res, authOptions)
 
   // fetch product base on the id parameter
   const API_URL = getApiUrl()
-  const { data } = await axios.get(`${API_URL}/api/products/${params.id}`)
+  let product = null
+  try {
+    const response = await axios.get(`${API_URL}/api/products/${params.id}`)
+    product = response.data
+  } catch (error) {
+    console.error(error.message)
+  }
   return {
-    props: { product: data, data: JSON.parse(JSON.stringify(session)) },
+    props: { product, data: JSON.parse(JSON.stringify(session)) },
   }
 }
 
@@ -46,7 +52,7 @@ const Details = ({ product, data: session }) => {
       return
     }
 
-    // fetch product to cart
+    // put product to a user's cart
     try {
       const productObj = {
         productId: product._id,

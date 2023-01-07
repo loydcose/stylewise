@@ -8,7 +8,7 @@ import axios from "axios"
 import { useRouter } from "next/router"
 import { getServerSideProps } from "../../ServerProps/auth"
 
-// redirect user if he's already logged in
+// redirect user to homepage if he's already signed up
 export { getServerSideProps }
 
 export default function SignUp() {
@@ -16,7 +16,7 @@ export default function SignUp() {
   const { register, handleSubmit } = useForm()
 
   const onSubmit = async (data) => {
-    let response
+    let response = null
     try {
       // loading notification
       toast.loading("Loading...")
@@ -26,18 +26,14 @@ export default function SignUp() {
       console.error(error.message)
     }
 
+    // show un/successful notification
     const { success, message } = response.data
-    // error notification
-    if (!success) {
-      toast.error(message)
-      return
-    }
+    success ? toast.success(message) : toast.error(message)
 
-    // after a successful login, redirect user to login page
-    toast.success(message)
+    // redirect user to login page after 1s
     setTimeout(() => {
       router.push("/auth/signin")
-    }, 2000)
+    }, 1000)
   }
 
   return (

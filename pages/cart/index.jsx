@@ -41,6 +41,7 @@ export default function Index({ data: session }) {
   const { subTotal, shipping, total } = totalObj
 
   const handleOrder = async (data) => {
+    let response = null
     const payload = {
       userId: session.id,
       products: rawItems,
@@ -48,9 +49,13 @@ export default function Index({ data: session }) {
       shippingInfo: data,
     }
 
-    toast.loading("Loading...")
-    const response = await axios.post("/api/order", payload)
-    toast.dismiss()
+    try {
+      toast.loading("Loading...")
+      response = await axios.post("/api/order", payload)
+      toast.dismiss()
+    } catch (error) {
+      console.error(error.message)
+    }
 
     const { success, message } = response.data
     success ? toast.success(message) : toast.error(message)

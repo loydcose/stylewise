@@ -39,7 +39,7 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/">
+                <Link href="https://github.com/loydcose/stylewise.git">
                   <AiFillGithub className="text-2xl hover:text-violet-600 transition-colors" />
                 </Link>
               </li>

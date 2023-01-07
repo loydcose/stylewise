@@ -18,11 +18,15 @@ const useItemQty = (userId, itemId, productQuantity, fetchCartItems) => {
 
   // quantity update request
   const updateQuantity = async () => {
-    await axios.put(`/api/cart/${userId}/?itemId=${itemId}`, {
-      quantity,
-    })
-    setLoading(false)
-    fetchCartItems()
+    try {
+      await axios.put(`/api/cart/${userId}/?itemId=${itemId}`, {
+        quantity,
+      })
+      setLoading(false)
+      fetchCartItems()
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 
   // debounce applied for repetitive increments / decrements

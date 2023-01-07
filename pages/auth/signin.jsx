@@ -8,7 +8,7 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/router"
 import { getServerSideProps } from "../../ServerProps/auth"
 
-// redirect user if he's already logged in
+// redirect user to homepage if he's already logged in
 export { getServerSideProps }
 
 export default function SignIn() {
@@ -16,10 +16,10 @@ export default function SignIn() {
   const router = useRouter()
 
   const onSubmit = async (data) => {
-    let status
+    let status = null
 
-    // verifying credentials with next-auth
     try {
+      // verify user credentials with next-auth
       toast.loading("Loading...")
       status = await signIn("credentials", {
         redirect: false,
@@ -30,8 +30,9 @@ export default function SignIn() {
       console.error(error.message)
     }
 
-    // show error if email or pass isn't correct
-    if (status.error) return toast.error(status.error)
+    // show error if email or password isn't correct
+    const { error, ok } = status
+    if (!ok) return toast.error(error)
 
     // redirect user to home page after 1 second
     toast.success("Login successful")

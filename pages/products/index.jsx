@@ -9,51 +9,55 @@ import axios from "axios"
 import { useContext, useState } from "react"
 import { useRouter } from "next/router"
 import uppercase from "../../utils/uppercase"
-import getSession from "../../utils/getSession"
 import CartQtyContext from "../../context/CartQty"
 import useFilters from "../../hooks/useFilters"
 import getApiUrl from "../../getApiUrl"
+import { unstable_getServerSession } from "next-auth"
+import { authOptions } from "../api/auth/[...nextauth]"
 
 export async function getServerSideProps({ query, req, res }) {
-  // verify user with unstable_getServerSession
-  const session = await getSession(req, res)
+  const session = await unstable_getServerSession(req, res, authOptions)
 
   const API_URL = getApiUrl()
-  const category = query.category
-  const search = query.search
-  let rawProducts = null
+  const { category, search } = query
+  let products = null
+  let categories = null
 
-  // fetch for categories
-  const response = await axios.get(`${API_URL}/api/products/categories`)
-  const categories = response.data.map((item) => item[0])
+  try {
+    // fetch categories and remove the image property
+    const response = await axios.get(`${API_URL}/api/products/categories`)
+    categories = response.data.map((item) => item[0])
 
-  // product filters
-  if (category) {
-    // category query
-    const response = await axios.get(
-      `${API_URL}/api/products?category=${category}`
-    )
-    rawProducts = response.data
-  } else if (search) {
-    // search query
-    const response = await axios.get(`${API_URL}/api/products?search=${search}`)
-    rawProducts = response.data
-  } else {
-    // default to all item
-    const response = await axios.get(`${API_URL}/api/products`)
-    rawProducts = response.data
+    // filter products base on the query
+    if (category) {
+      const response = await axios.get(
+        `${API_URL}/api/products?category=${category}`
+      )
+      products = response.data
+    } else if (search) {
+      const response = await axios.get(
+        `${API_URL}/api/products?search=${search}`
+      )
+      products = response.data
+    } else {
+      // default to all item
+      const response = await axios.get(`${API_URL}/api/products`)
+      products = response.data
+    }
+  } catch (error) {
+    console.error(error.message)
   }
 
   return {
     props: {
-      rawProducts,
+      products,
       categories,
       data: JSON.parse(JSON.stringify(session)),
     },
   }
 }
 
-const Products = ({ rawProducts, categories, data: session }) => {
+const Products = ({ products, categories, data: session }) => {
   const router = useRouter()
   const categoryQuery = router.query.category
   const [search, setSearch] = useState("")
@@ -62,8 +66,8 @@ const Products = ({ rawProducts, categories, data: session }) => {
   const { cartQty, fetchCartQty } = useContext(CartQtyContext)
   if (session) fetchCartQty(session.id)
 
-  // custom hooks that handles all filters, sort etc.
-  const [products, handleFilter] = useFilters(rawProducts)
+  // custom hooks that handles the dropdown sort
+  const [filteredProducts, handleFilter] = useFilters(products)
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -143,16 +147,16 @@ const Products = ({ rawProducts, categories, data: session }) => {
                 <option value="sort" disabled>
                   Sort by
                 </option>
-                <option value="asc">Price ↓</option>
                 <option value="desc">Price ↑</option>
+                <option value="asc">Price ↓</option>
                 <option value="new">Newest</option>
                 <option value="old">Oldest</option>
               </select>
             </div>
           </div>
           <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {products &&
-              products.map((item) => {
+            {filteredProducts &&
+              filteredProducts.map((item) => {
                 return <Item key={item._id} {...item} />
               })}
           </section>

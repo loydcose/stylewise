@@ -1,29 +1,29 @@
 import { useState } from "react"
 
-const useFilters = (rawProducts) => {
-  const [products, setProducts] = useState(rawProducts)
+const useFilters = (products) => {
+  const [filteredProducts, setFilteredProducts] = useState(products)
 
   const handleFilter = (type) => {
     let sorted = []
     if (type === "asc") {
-      sorted = rawProducts.sort((a, b) => a.price - b.price)
+      sorted = products.sort((a, b) => b.price - a.price)
     } else if (type === "desc") {
-      sorted = rawProducts.sort((a, b) => b.price - a.price)
+      sorted = products.sort((a, b) => a.price - b.price)
     } else if (type === "new") {
-      sorted = rawProducts.sort(
+      sorted = products.sort(
         (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       )
     } else if (type === "old") {
-      sorted = rawProducts.sort(
+      sorted = products.sort(
         (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
       )
     } else {
-      sorted = rawProducts
+      sorted = products
     }
-    setProducts([...sorted])
+    setFilteredProducts([...sorted])
   }
 
-  return [products, handleFilter]
+  return [filteredProducts, handleFilter]
 }
 
 export default useFilters

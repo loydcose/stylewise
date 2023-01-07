@@ -3,20 +3,23 @@ import Cart from "../../../database/models/cart"
 
 export default async function handler(req, res) {
   const { userId, ...productData } = req.body
-  await dbConnect()
 
-  try {
-    // find the user's cart in the database
-    const cart = await Cart.findOne({ userId })
+  if (req.method === "POST") {
+    await dbConnect()
+    try {
+      // find the user's cart in the database
+      const cart = await Cart.findOne({ userId })
 
-    // if no cart found, create new one
-    if (!cart) {
-      const newCart = {
-        userId,
-        products: [productData],
+      // if no cart found, create new one that contains user cart products
+      if (!cart) {
+        const newCart = {
+          userId,
+          products: [productData],
+        }
+        await Cart.create(newCart)
+        return res.json({ success: true, message: "Added to bag" })
       }
-      await Cart.create(newCart)
-    } else {
+
       // if the cart exists, check first if the product is already in the cart
       const productIndex = cart.products.findIndex((item) => {
         const { quantity, _id, ...itemData } = item._doc
@@ -32,10 +35,11 @@ export default async function handler(req, res) {
         cart.products.push(productData)
       }
       await cart.save()
+
+      res.json({ success: true, message: "Added to bag" })
+    } catch (error) {
+      console.log(error.message)
+      res.json({ success: false, message: "There's something wrong" })
     }
-    res.json({ success: true, message: "Added to bag" })
-  } catch (error) {
-    console.log(error.message)
-    res.json({ success: false, message: "There's something wrong" })
   }
 }

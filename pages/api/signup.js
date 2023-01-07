@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const { password, rePassword, ...others } = req.body
   await dbConnect()
 
-  // check if passwords are matched
+  // check if passwords has matched
   if (password !== rePassword) {
     return res.json({
       success: false,
@@ -15,12 +15,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    // removing re-enter password and hash the orig password
+    // hash the password and save the user to database
     const hashed = await hash(password)
     const userData = { ...others, password: hashed }
     await User.create(userData)
-    res.json({ success: true, message: "Account registered!" })
+    res.json({ success: true, message: "Account registered" })
   } catch (error) {
-    res.json({ success: false, message: "Email has already taken" })
+    res.json({ success: false, message: "Email is already exists" })
   }
 }

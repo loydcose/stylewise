@@ -2,9 +2,13 @@
 
 Welcome to Stylewise, a fullstack e-commerce web application for selling apparel built with server-side rendering (SSR).
 
+## Homepage preview
+
+![Homepage Preview](https://i.ibb.co/kqBJSHq/homepage.png)
+
 ## Technologies Used
 
-- NextJS
+- NextJSp
 - TailwindCSS
 - MongoDB
 

@@ -8,14 +8,18 @@ import getApiUrl from "../getApiUrl"
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [cartQty, setCartQty] = useState(0)
 
+  // handles cart quantity items in the navbar
   const fetchCartQty = async (userId) => {
     if (!userId) return
 
-    const API_URL = getApiUrl()
-    const response = await axios.get(`${API_URL}/api/cart/${userId}`)
-    console.log(`${API_URL}/api/cart/${userId}`);
-    const quantity = response.data.length
-    setCartQty(quantity)
+    try {
+      const API_URL = getApiUrl()
+      const response = await axios.get(`${API_URL}/api/cart/${userId}`)
+      const quantity = response.data.length
+      setCartQty(quantity)
+    } catch (error) {
+      console.error(error.message)
+    }
   }
 
   return (

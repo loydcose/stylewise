@@ -1,13 +1,8 @@
 import NextAuth from "next-auth/next"
 import CredentialsProvider from "next-auth/providers/credentials"
-import connect from "../../../database/dbConnect"
+import dbConnect from "../../../database/dbConnect"
 import User from "../../../database/models/user"
 import { compare } from "../../../utils/bcrypt"
-import dotenv from "dotenv"
-dotenv.config()
-connect()
-
-// TODO: fix session always return status:200, ok: true
 
 export const authOptions = {
   secret: process.env.NEXT_AUTH_SECRET,
@@ -15,18 +10,17 @@ export const authOptions = {
     CredentialsProvider({
       name: "credentials",
       credentials: {},
-      authorize: async ({ email, password }, req) => {
-        // find user email to the database
-        const user = await User.findOne({ email })
-        if (!user) {
-          throw new Error("Email address doesn't exist")
-        }
+      authorize: async (credentials, req) => {
+        const { email, password } = credentials
 
-        // check if password matched
+        // check if user email address is exist
+        await dbConnect()
+        const user = await User.findOne({ email })
+        if (!user) throw new Error("Email or password incorrect")
+
+        // check if password matched with bcrypt
         const match = await compare(password, user.password)
-        if (!match) {
-          throw new Error("Incorrect password")
-        }
+        if (!match || !user) throw new Error("Email or password incorrect")
 
         // remove unnecessary props and return as payload
         const { password: secret, _id, ...others } = user._doc
@@ -36,17 +30,13 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    // user to jwt, jwt to session, so we can access the payload on the client side
+    // pass the user information from jwt up to session
     async jwt({ token, user }) {
-      if (user) {
-        token = { ...token, ...user }
-      }
+      if (user) token = { ...token, ...user }
       return token
     },
     async session({ session, token }) {
-      if (token) {
-        session = { ...session.user, ...token }
-      }
+      if (token) session = { ...session.user, ...token }
       return session
     },
   },

@@ -25,7 +25,7 @@ const useCart = (session) => {
         return { ...item, price, image, name }
       })
 
-      // finally, set the resolved items to the hook
+      // finally, set the resolved items to the state
       setCartItems(await Promise.all(resolvedItems))
     } catch (error) {
       console.error(error)
@@ -39,14 +39,16 @@ const useCart = (session) => {
       result += item.price * item.quantity
       return result
     }, 0)
-    let shipping = 0
 
     // free shipping for orders of $100 or more
+    let shipping = 0
     if (subTotal >= 100) {
       shipping = 0
     } else if (cartItems.length >= 1) {
       shipping = 5
     }
+
+    // calculates the grand total and setting it up on the state
     const total = subTotal + shipping
     setTotalObj({ subTotal, shipping, total })
   }, [cartItems])
