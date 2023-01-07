@@ -8,7 +8,7 @@ Welcome to Stylewise, a fullstack e-commerce web application for selling apparel
 
 ## Technologies Used
 
-- NextJSp
+- NextJS
 - TailwindCSS
 - MongoDB
 
